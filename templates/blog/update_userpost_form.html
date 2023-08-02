@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if request.user == userpost.author %}
+  <form method="POST" class="form-group">
+    {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+        </table>
+
+      <button type="submit" class="btn btn-success">Update</button>
+      <button type="reset" class="btn btn-info">Reset updated values</button>
+{#    <a href="{{ userpost.get_absolute_url }}" class="btn btn-info">Change password</a>#}
+  </form>
+    {% else %}
+    <div class="row">
+              <div class="col-md-7 card mb-4  mt-3 left  top">
+                  <div class="card-body">
+                      <h1>Oops...  &#9919; </h1>
+                      <div class="col-md-10 card mb-4  mt-4 left  top">
+                          <div class="card-body">
+                              <p class="font-weight-bold">Sorry, but only the author can change current post</p>
+                          </div>
+                      </div>
+                  </div>
+            </div>
+    </div>
+{% endif %}
+{% endblock %}

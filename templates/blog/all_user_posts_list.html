@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block Title %}
+        <title>user Posts</title>
+    {% endblock Title %}
+</head>
+<body>
+{% block content %}
+    <fieldset>
+    <h1>List of User Post:</h1>
+    </fieldset>
+{% if object_list %}
+    <ol>
+        {% for post in object_list %}
+            {% if post.status == 1 %}
+                <li>
+{#                  </li><a href="{% url "blog:post_detail" post.id %}">{{ post.title }}</a>#}
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+{% else %}
+        <p>No post are available</p>
+{% endif %}
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form action="{% url "blog:create_post" %}" method="POST" enctype="multipart/form-data" class="form-group">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" class="btn btn-success" value="Create">
+        <input type="reset" class="btn btn-info" value="Reset">
+    </form>
+
+{% endblock content %}
+
