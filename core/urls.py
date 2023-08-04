@@ -23,3 +23,4 @@ if settings.DEBUG:
         # path("silk/", include("silk.urls", namespace="silk")),
         ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,
                                                                                      document_root=settings.MEDIA_ROOT)
+
