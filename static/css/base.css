@@ -138,10 +138,6 @@ li {
     border: 1px solid #555;
 }
 
-/*li:last-child {*/
-/*    !*isolation: isolate;*!*/
-/*    border-bottom: none;*/
-/*}*/
 
 li a.active {
     /*isolation: isolate;*/
