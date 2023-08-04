@@ -41,18 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'django_extensions',
-    "django_celery_results",
+    # 'django_extensions',
+    # "django_celery_results",
 
     "blog",
 ]
 # fmt: on
 
-if DEBUG:
-    INSTALLED_APPS += [
-        "debug_toolbar",
-        # "silk",
-    ]
+# if DEBUG:
+#     INSTALLED_APPS += [
+#         "debug_toolbar",
+#         # "silk",
+#     ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,11 +65,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 #
-if DEBUG:
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-        # "silk.middleware.SilkyMiddleware",
-    ]
+# if DEBUG:
+#     MIDDLEWARE += [
+#         "debug_toolbar.middleware.DebugToolbarMiddleware",
+#         # "silk.middleware.SilkyMiddleware",
+#     ]
 
 ROOT_URLCONF = 'core.urls'
 
@@ -181,19 +181,19 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_CACHE_BACKEND = "default"
 
 # django setting.
-CACHES = {
-    # "default": {
-    #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-    #     "LOCATION": "my_cache_table",
-    # },
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
+# CACHES = {
+#     # "default": {
+#     #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#     #     "LOCATION": "my_cache_table",
+#     # },
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/0",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         },
+#     }
+# }
 
 INTERNAL_IPS = [
     "127.0.0.1",
