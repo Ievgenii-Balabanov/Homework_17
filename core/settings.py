@@ -41,18 +41,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'django_extensions',
-    # "django_celery_results",
+    'django_extensions',
+    "django_celery_results",
 
     "blog",
 ]
 # fmt: on
 
-# if DEBUG:
-#     INSTALLED_APPS += [
-#         "debug_toolbar",
-#         # "silk",
-#     ]
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        # "silk",
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,12 +64,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-#
-# if DEBUG:
-#     MIDDLEWARE += [
-#         "debug_toolbar.middleware.DebugToolbarMiddleware",
-#         # "silk.middleware.SilkyMiddleware",
-#     ]
+
+if DEBUG:
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        # "silk.middleware.SilkyMiddleware",
+    ]
 
 ROOT_URLCONF = 'core.urls'
 
@@ -143,10 +143,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# if DEBUG:
-#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# # else:
-    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -168,32 +168,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # celery
 #
-# CELERY_TASK_TRACK_STARTED = True
-# CELERY_TASK_TIME_LIMIT = 30 * 60
-# CELERY_RESULT_BACKEND = "django-db"
-# CELERY_BROKER_URL = "amqp://localhost:5672"
-# CELERY_ACCEPT_CONTENT = ["application/json"]
-# CELERY_TASK_SERIALIZER = "json"
-# CELERY_RESULT_SERIALIZER = "json"
-# CELERY_TIMEZONE = TIME_ZONE
-#
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = "amqp://localhost:5672"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+
 # # celery setting.
-# CELERY_CACHE_BACKEND = "default"
+CELERY_CACHE_BACKEND = "default"
 
 # django setting.
-# CACHES = {
-#     # "default": {
-#     #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-#     #     "LOCATION": "my_cache_table",
-#     # },
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/0",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         },
-#     }
-# }
+CACHES = {
+    # "default": {
+    #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+    #     "LOCATION": "my_cache_table",
+    # },
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
 
 INTERNAL_IPS = [
     "127.0.0.1",

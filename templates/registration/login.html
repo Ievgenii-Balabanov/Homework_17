@@ -28,12 +28,13 @@
       </tr>
     </table>
 
-    <input type="submit" value="login"/>
+      <input type="submit" value="Login"/>
+      <input type="reset" value="Reset"/>
     <input type="hidden" name="next" value="{{ next }}"/>
   </form>
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Lost password?</a>
-  </p><p><a href="{% url 'blog:index' %}">Home</a></p>
+{#  </p><p><a href="{% url 'blog:index' %}">Home</a></p>#}
 
 {% endblock %}

@@ -113,31 +113,18 @@ class UserPostUpdateView(LoginRequiredMixin, SuccessMessageMixin, PermissionRequ
         instance = formset.save(commit=False)
         instance.author = self.request.user
         if instance:
-            # send_email.apply_async(
-            #     kwargs={
-            #         "subject": "Update Post Notification",
-            #         "message": "Your post was successfully updated!",
-            #         "from_email": "test@test.com",
-            #         },
-            # )
+            send_email.apply_async(
+                kwargs={
+                    "subject": "Update Post Notification",
+                    "message": "Your post was successfully updated!",
+                    "from_email": "test@test.com",
+                    },
+            )
             return super().form_valid(formset)
 
     def get_success_url(self):
         # return reverse_lazy("blog:post_detail", kwargs={'pk': self.object.pk})
         return reverse_lazy("blog:post_detail", kwargs={'pk': self.kwargs.get("pk")})
-
-    # def comments_paginate(self, request):
-    #     paginator = UserPost.objects.all()
-    #     if "page" in request.GET:
-    #         page = request.GET["page"]
-    #     else:
-    #         page = 1
-    #     paginator = Paginator(paginator, 3)
-    #
-    #     context = {
-    #         'paginator': paginator
-    #     }
-    #     return render(request, "blog/all_user_posts_list.html", context)
 
 
 # @method_decorator(cache_page(15), "get")
@@ -196,25 +183,25 @@ def add_comment(request, pk):
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.post = post
-            # send_email.apply_async(
-            #     kwargs={
-            #         "subject": "New Comment User Notification",
-            #         "message": loader.render_to_string(
-            #             "blog/user_html_message.html", {"post": post}, request
-            #         ),
-            #         "from_email": "test@test.com",
-            #     },
-            # )
-            # send_email_to_admin.apply_async(
-            #     kwargs={
-            #         "subject": "New Comment Admin Notification",
-            #         "message": loader.render_to_string(
-            #             # "blog/admin_html_comment_message.html", {"message": "message"}, request
-            #             "blog/admin_html_comment_message.html", {"post": post}, request
-            #         ),
-            #         "from_email": "test@test.com",
-            #     },
-            # )
+            send_email.apply_async(
+                kwargs={
+                    "subject": "New Comment User Notification",
+                    "message": loader.render_to_string(
+                        "blog/user_html_message.html", {"post": post}, request
+                    ),
+                    "from_email": "test@test.com",
+                },
+            )
+            send_email_to_admin.apply_async(
+                kwargs={
+                    "subject": "New Comment Admin Notification",
+                    "message": loader.render_to_string(
+                        # "blog/admin_html_comment_message.html", {"message": "message"}, request
+                        "blog/admin_html_comment_message.html", {"post": post}, request
+                    ),
+                    "from_email": "test@test.com",
+                },
+            )
             messages.success(
                 request, "Your comment is successfully created and awaiting moderation")
             new_comment.save()
@@ -232,15 +219,15 @@ def contact_admin(request):
     if request.POST:
         form = ContactAdminForm(request.POST)
         if form.is_valid():
-            # send_email.apply_async(
-            #     kwargs={
-            #         "subject": "Reminder",
-            #         "message": loader.render_to_string(
-            #             "blog/contact_admin_message.html", {"message": form.cleaned_data["message"]}, request
-            #         ),
-            #         "from_email": form.cleaned_data["from_email"],
-            #     },
-            # )
+            send_email.apply_async(
+                kwargs={
+                    "subject": "Reminder",
+                    "message": loader.render_to_string(
+                        "blog/contact_admin_message.html", {"message": form.cleaned_data["message"]}, request
+                    ),
+                    "from_email": form.cleaned_data["from_email"],
+                },
+            )
             return redirect(reverse("blog:index"))
     else:
         form = ContactAdminForm()
