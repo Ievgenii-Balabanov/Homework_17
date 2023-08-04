@@ -16,7 +16,6 @@ from django.contrib.auth import get_user_model
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -24,13 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-jvglss@jx-93bksui$eun4=*^#-7@payhx0c5+%!b2pnoc$g+")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
+# DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["127.0.0.1",
+                 "localhost",
+                 ]
 
 # Application definition
 
+# fmt: off
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,15 +41,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    "blog",
     'django_extensions',
     "django_celery_results",
-    "debug_toolbar",
+
+    "blog",
 ]
+# fmt: on
+
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        # "silk",
+    ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,6 +64,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+#
+if DEBUG:
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        # "silk.middleware.SilkyMiddleware",
+    ]
 
 ROOT_URLCONF = 'core.urls'
 
@@ -76,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -86,7 +100,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -108,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "blog.MyUser"
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -120,21 +132,34 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
+# #
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+# if DEBUG:
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# # else:
+    # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# STORAGES = {
+#     # ...
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -177,4 +202,3 @@ INTERNAL_IPS = [
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 NOREPLY_EMAIL = "noreply@hillel.io"
-

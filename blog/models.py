@@ -25,7 +25,6 @@ class UserPost(models.Model):
     title = models.CharField(max_length=200, unique=True)
     summary = models.CharField(max_length=100)
     image = models.ImageField(upload_to="media/images", blank=True, null=True)
-    slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
     content = models.TextField()

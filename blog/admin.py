@@ -3,8 +3,13 @@ from django.contrib.auth.admin import UserAdmin
 from .models import MyUser, UserPost, Comment
 
 
+class ItemInLine(admin.StackedInline):
+    model = Comment
+    extra = 1
+
+
 class MyUserAdmin(admin.ModelAdmin):
-    list_display = ["username", "about", "first_name", "last_name", "email", "is_staff"]
+    list_display = ["username", "first_name", "last_name", "is_staff"]
     # fieldsets = [
     #     ("User name", {"fields": ["username"]}),
     #     ("About", {"fields": ["about"]}),
@@ -14,18 +19,21 @@ class MyUserAdmin(admin.ModelAdmin):
 
 @admin.register(UserPost)
 class UserPostAdmin(admin.ModelAdmin):
-    # list_display = ["title", "description", "body"]
-    list_display = ["title", "content"]
+    list_display = ["title", "author", "summary", "content", "status"]
+    search_fields = ["title"]
+    list_filter = ["created_on"]
+    list_select_related = True
+
+    inlines = [ItemInLine]
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    # list_display = ('name', 'body', 'post', 'created_on')
-    list_display = ['name', 'post', 'created_on']
-    list_filter = ['created_on',]
-    # search_fields = ('name', 'email', 'body')
+    list_display = ['name', 'post', 'created_on', "is_published"]
+    list_filter = ['created_on']
     search_fields = ['name']
     actions = ['approve_comments']
+    ordering = ["-created_on"]
 
     def approve_comments(self, request, queryset):
         queryset.update(active=True)

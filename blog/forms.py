@@ -23,7 +23,7 @@ class UpdateUserPostForm(forms.ModelForm):
     class Meta:
         model = UserPost
         # fields = ["title", "description"]
-        fields = ["title", "slug", "content", "status"]
+        fields = ["title", "content", "status"]
 
 
 class PostCreateForm(forms.ModelForm):
@@ -32,13 +32,12 @@ class PostCreateForm(forms.ModelForm):
     class Meta:
         model = UserPost
         # fields = ["title", "description"]
-        fields = ["title", "slug", "content", "status"]
+        fields = ["title", "content", "status"]
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        # fields = ['name', 'body']
         fields = ['name', "body"]
 
 

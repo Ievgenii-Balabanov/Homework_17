@@ -6,7 +6,6 @@
 {% load static %}
 <p> {{ is_paginated }} </p>
 {% block content %}
-    <img src="{{ userpost.image.url }}" alt="">
     <div class="container">
         <div class="row">
             <div class="col-md-8 card mb-4  mt-3 left  top">
@@ -18,20 +17,21 @@
                             <p class="card-text ">Summary: {{ userpost.summary }}</p>
                             <p class="card-text ">Content: {{ userpost.content | safe }}</p>
                             <form action="{% url "blog:post_detail" userpost.id %}" method="get" enctype="multipart/form-data"></form>
-{#                            <p class="card-text "><img src="{{ userpost.image.url }}" alt=""></p>#}
+                            {% if userpost.image %}
+                                <p>Post Image </p>
+                                <p class="card-text "><img src="{{ userpost.image.url }}" alt=""></p>
+                            {% endif %}
                         </div>
                     </div>
                     <a href="{% url "blog:update_post" userpost.id %}">Update post</a>
                 </div>
             </div>
 
-{#          <div class="container">#}
-{#          <div class="container">#}
-
                 <div class="col-md-8 card mb-4  mt-3 ">
                     <div class="card-body">
     {#                    <h2>{{ object.comments.all|join:", " }}</h2>#}
-                        {% for comment in object.comments.all %}
+{#                        {% for comment in object.comments.all %}#}
+                        {% for comment in comments %}
                             {% if comment.is_published == True %}
                                 <div class="col-md-8 card mb-4  mt-3 left  top">
                                     <div class="comments" style="padding: 10px;">
@@ -52,30 +52,21 @@
                             {% endif %}
                         {% endfor %}
 
-{#                    {% block pagination %}#}
-{#                        #}
-{#                    {% endblock pagination %}#}
-
-
-{#                        {% block pagination %}#}
-{#                        {% if is_paginated %}#}
                             <div class="pagination">
                                 <span class="page-links">
-                                    {% if page_obj.has_previous %}
+                                    {% if comments.has_previous %}
                                         <a href="?page=1">&laquo; First</a>
-                                        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+                                        <a href="{{ request.path }}?page={{ comments.previous_page_number }}">Previous</a>
                                     {% endif %}
                                     <span class="page-current">
-                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                        Page {{ comments.number }} of {{ comments.paginator.num_pages }}
                                     </span>
-                                    {% if page_obj.has_next %}
-                                        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next</a>
-                                        <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                                    {% if comments.has_next %}
+                                        <a href="{{ request.path }}?page={{ comments.next_page_number }}">Next</a>
+                                        <a href="?page={{ comments.paginator.num_pages }}">Last &raquo;</a>
                                     {% endif %}
                                 </span>
                             </div>
-{#                        {% endif %}#}
-{#                    {% endblock %}#}
                         </div>
                     </div>
                 </div>
