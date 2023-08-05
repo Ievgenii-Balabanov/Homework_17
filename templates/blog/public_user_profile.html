@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <br>
+
+    <p>Username: {{ myuser.username }}</p>
+    <p>First name: {{ myuser.first_name }}</p>
+    <p>Last name: {{ myuser.last_name }}</p>
+    <p>Email-address: {{ myuser.email }}</p>
+    {% if myuser == request.user %}
+    <a href="{% url "update_profile" %}">Update User Profile</a>
+    {% endif %}
+
+{% endblock %}

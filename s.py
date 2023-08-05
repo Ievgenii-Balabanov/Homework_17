@@ -5,22 +5,19 @@ from django.contrib.messages import get_messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template import loader
-from django.utils.decorators import method_decorator
 
 from django.views import generic
 
 from django.urls import reverse_lazy, reverse
-from django.views.decorators.cache import cache_page
 
 from blog.forms import RegisterForm, ContactAdminForm
 
 from blog.models import MyUser, UserPost, Comment
-from .tasks import send_email, send_email_to_admin
 from .forms import CommentForm
 
 
-def index(request):
+
+def indexs(request):
     return render(request, "index.html")
 
 
@@ -62,7 +59,7 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateV
     model = MyUser
     template_name = "registration/update_profile.html"
     fields = ["first_name", "last_name", "email"]
-    success_url = reverse_lazy("profile")
+    success_url = reverse_lazy("blog:public_profile")
     success_message = "Your profile was successfully updated!"
 
     def get_object(self, queryset=None):
@@ -75,7 +72,6 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateV
 
 class WritePostView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = UserPost
-    # fields = ["title", "description", "body"]
     fields = ["title", "summary", "content", "status", "image"]
     success_url = reverse_lazy("blog:post_detail")
     success_message = "Your post has been created and awaits approval!"
@@ -83,22 +79,6 @@ class WritePostView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView)
     def form_valid(self, formset):
         instance = formset.save(commit=False)
         instance.author = self.request.user
-        send_email.apply_async(
-            kwargs={
-                "subject": "New Post Notification",
-                "message": "New Post is created",
-                "from_email": "test@test.com",
-                },
-        )
-        send_email_to_admin.apply_async(
-            kwargs={
-                "subject": "New Post Admin Notification",
-                "message": loader.render_to_string(
-                    "blog/admin_html_post_message.html", {"message": "message"},
-                ),
-                "from_email": "test@test.com",
-            },
-        )
         return super().form_valid(formset)
 
     def get_success_url(self):
@@ -128,13 +108,6 @@ class UserPostUpdateView(LoginRequiredMixin, SuccessMessageMixin, PermissionRequ
         instance = formset.save(commit=False)
         instance.author = self.request.user
         if instance:
-            send_email.apply_async(
-                kwargs={
-                    "subject": "Update Post Notification",
-                    "message": "Your post was successfully updated!",
-                    "from_email": "test@test.com",
-                    },
-            )
             return super().form_valid(formset)
 
     def get_success_url(self):
@@ -142,7 +115,6 @@ class UserPostUpdateView(LoginRequiredMixin, SuccessMessageMixin, PermissionRequ
         return reverse_lazy("blog:post_detail", kwargs={'pk': self.kwargs.get("pk")})
 
 
-@method_decorator(cache_page(15), "get")
 class AllPostsListView(generic.ListView):
     model = UserPost
     template_name = "blog/all_user_posts_list.html"
@@ -191,34 +163,17 @@ class UserPostDetailView(generic.DetailView):
 def add_comment(request, pk):
     post = get_object_or_404(UserPost, pk=pk)
     comments = Comment.objects.filter(pk=pk)
+    print("Hello")
     new_comment = None
     if request.method == 'POST':
         form = CommentForm(data=request.POST)
         if form.is_valid():
             new_comment = form.save(commit=False)
             new_comment.post = post
-            send_email.apply_async(
-                kwargs={
-                    "subject": "New Comment User Notification",
-                    "message": loader.render_to_string(
-                        "blog/user_html_message.html", {"post": post}, request
-                    ),
-                    "from_email": "test@test.com",
-                },
-            )
-            send_email_to_admin.apply_async(
-                kwargs={
-                    "subject": "New Comment Admin Notification",
-                    "message": loader.render_to_string(
-                        # "blog/admin_html_comment_message.html", {"message": "message"}, request
-                        "blog/admin_html_comment_message.html", {"post": post}, request
-                    ),
-                    "from_email": "test@test.com",
-                },
-            )
             messages.success(
                 request, "Your comment is successfully created and awaiting moderation")
             new_comment.save()
+            print("Hello")
             return redirect(reverse("blog:post_detail", kwargs={'pk': pk}))
 
     else:
@@ -232,15 +187,6 @@ def contact_admin(request):
     if request.POST:
         form = ContactAdminForm(request.POST)
         if form.is_valid():
-            send_email.apply_async(
-                kwargs={
-                    "subject": "Reminder",
-                    "message": loader.render_to_string(
-                        "blog/contact_admin_message.html", {"message": form.cleaned_data["message"]}, request
-                    ),
-                    "from_email": form.cleaned_data["from_email"],
-                },
-            )
             return redirect(reverse("blog:index"))
     else:
         form = ContactAdminForm()
