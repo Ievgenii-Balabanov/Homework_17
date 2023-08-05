@@ -14,6 +14,10 @@ class MyUser(AbstractUser):
     about = models.CharField(max_length=200)
     image = models.ImageField()
 
+    # def get_absolute_url(self):
+    #     myuser_id = self.pk
+    #     return reverse("profile", kwargs={"pk": myuser_id})
+
 
 STATUS = (
     (0, "Draft"),

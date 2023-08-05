@@ -69,21 +69,21 @@
             <div class="col-sm-2">
               {% block sidebar %}
                 <ul class="sidebar-nav">
+                    <li><a href="{% url 'blog:all_user' %}">All Users</a></li>
 {#                    <li><a href="{% url 'blog:index' %}">Home</a></li>#}
                     <li><a href="{% url "blog:all_post" %}">All posts</a></li>
                     <li><a href="{% url 'blog:post_list' %}">User posts</a></li>
-                  <li><a href="{% url 'blog:create_post' %}">Write a new Post</a></li>
-        {#          <li><a href="{% url 'contact' %}">Contact</a></li>#}
+                    <li><a href="{% url 'blog:create_post' %}">Write a new Post</a></li>
                 </ul>
 
                 <ul class="sidebar-nav">
                   {% if user.is_authenticated %}
                     <li>User: <strong>{{ user.get_username }}</strong></li>
                       {% if user.is_staff %}
-                          <li>Staff</li>
+                          <li>User Status: Staff</li>
                       {% endif %}
         {#            <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>#}
-                      <li><a href="{% url 'profile' %}">User profile</a></li>
+                      <li><a href="{% url 'blog:public_profile' user.id %}">User profile</a></li>
 {#                      <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>#}
 {#                      <li><a href="{% url "blog:contact_admin" %}?next={{ request.path }}">Contact to Admin</a></li>#}
                   {% else %}
@@ -92,11 +92,11 @@
                   {% endif %}
                 </ul>
 
-                  <ul class="sidebar-nav">
-                  <li>
-                      <a href="{% url "blog:contact_admin" %}?next={{ request.path }}">Contact to Admin</a>
-                  </li>
-                  </ul>
+{#                  <ul class="sidebar-nav">#}
+{#                  <li>#}
+{#                      <a href="{% url "blog:contact_admin" %}?next={{ request.path }}">Contact to Admin</a>#}
+{#                  </li>#}
+{#                  </ul>#}
 
               {% endblock %}
             </div>

@@ -42,16 +42,31 @@ class UserProfile(LoginRequiredMixin, generic.DetailView):
         return user
 
 
+class PublicUserProfileDetailView(generic.DetailView):
+    model = MyUser
+    template_name = "blog/public_user_profile.html"
+
+
+class AllUserProfileListView(generic.ListView):
+    model = MyUser
+    template_name = "blog/all_user_profiles.html"
+    paginate_by = 2
+    queryset = MyUser.objects.all()
+
+
 class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = MyUser
     template_name = "registration/update_profile.html"
     fields = ["first_name", "last_name", "email"]
-    success_url = reverse_lazy("profile")
+    success_url = reverse_lazy("blog:public_profile")
     success_message = "Your profile was successfully updated!"
 
     def get_object(self, queryset=None):
         user = self.request.user
         return user
+
+    def get_success_url(self):
+        return reverse_lazy("blog:public_profile", kwargs={"pk": self.object.pk})
 
 
 class WritePostView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
@@ -158,7 +173,7 @@ def add_comment(request, pk):
                 request, "Your comment is successfully created and awaiting moderation")
             new_comment.save()
             print("Hello")
-            return redirect(reverse("blog:all_post"))
+            return redirect(reverse("blog:post_detail", kwargs={'pk': pk}))
 
     else:
         form = CommentForm()

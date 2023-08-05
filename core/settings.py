@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-jvglss@jx-93bksui$eun
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
-# DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1",
                  "localhost",
@@ -41,22 +41,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 'django_extensions',
-    # "django_celery_results",
+    'django_extensions',
+    "django_celery_results",
 
     "blog",
 ]
 # fmt: on
 
-# if DEBUG:
-#     INSTALLED_APPS += [
-#         "debug_toolbar",
-#         # "silk",
-#     ]
+if DEBUG:
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        # "silk",
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,11 +65,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# if DEBUG:
-#     MIDDLEWARE += [
-#         "debug_toolbar.middleware.DebugToolbarMiddleware",
-#         # "silk.middleware.SilkyMiddleware",
-#     ]
+if DEBUG:
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        # "silk.middleware.SilkyMiddleware",
+    ]
 
 ROOT_URLCONF = 'core.urls'
 
@@ -145,15 +145,15 @@ STATICFILES_DIRS = [
 
 if DEBUG:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# else:
+else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
 
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#
 # STORAGES = {
 #     # ...
 #     "staticfiles": {
@@ -176,7 +176,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CELERY_TASK_SERIALIZER = "json"
 # CELERY_RESULT_SERIALIZER = "json"
 # CELERY_TIMEZONE = TIME_ZONE
-
+#
 # # celery setting.
 # CELERY_CACHE_BACKEND = "default"
 
@@ -195,10 +195,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     }
 # }
 
-# INTERNAL_IPS = [
-#     "127.0.0.1",
-# ]
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
 NOREPLY_EMAIL = "noreply@hillel.io"

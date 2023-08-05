@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block Title %}
+        <title>User Profiles</title>
+    {% endblock Title %}
+</head>
+<body>
+{% block content %}
+    <fieldset>
+    <h1>List of Existing Users:</h1>
+    </fieldset>
+{% if object_list %}
+    <ol>
+        {% for user in myuser_list %}
+{#            {% if user.is_authenticated %}#}
+                <li>
+                  <a href="{% url "blog:public_profile" user.id %}">{{ user.username }}</a>
+{#                    <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>#}
+                </li>
+
+
+{#            {% endif %}#}
+        {% endfor %}
+    </ol>
+{% else %}
+        <p>No post are available</p>
+{% endif %}
+{% endblock content %}
+
+</body>
+</html>
