@@ -4,8 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.messages import get_messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 
 from django.views import generic
@@ -13,10 +15,12 @@ from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.cache import cache_page
 
-from blog.forms import RegisterForm, ContactAdminForm
+from blog.forms import RegisterForm, ContactAdminForm, ContactUsForm
 
 from blog.models import MyUser, UserPost, Comment
-from .tasks import send_email, send_email_to_admin
+from core.settings import NOREPLY_EMAIL
+from . import tasks
+from .tasks import send_email, send_email_to_admin, contact_email
 from .forms import CommentForm
 
 
@@ -245,3 +249,56 @@ def contact_admin(request):
     else:
         form = ContactAdminForm()
     return render(request, "blog/contact_admin.html", context={"form": form})
+
+
+# def contact_us(request, form, template):
+#     data = {}
+#     if request.POST:
+#         if form.is_valid:
+#             form.save()
+#             data["form_is_valid"] = True
+#             data["html_contact_us"] = render_to_string("blog/contact_admin_message.html",
+#                                                        {"message": form.cleaned_data["message"]}, request)
+#             send_email.apply_async(
+#                 kwargs={
+#                     "subject": "Reminder",
+#                     "message": loader.render_to_string(
+#                         "blog/contact_admin_message.html", {"message": form.cleaned_data["message"]}, request
+#                     ),
+#                     "from_email": form.cleaned_data["from_email"],
+#                 },
+#             )
+#             data['form_is_valid'] = True
+#             data['html_book_list'] = render_to_string('blog/includes/contact_us_form.html', {"form": form})
+#         else:
+#             data['form_is_valid'] = False
+#
+#     context = {"form": form}
+#     data["html"] = render_to_string(template, context, request=request)
+#     return JsonResponse(data)
+
+
+def contact_us(request, form, template_name):
+    data = dict()
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            contact_email.apply_async(
+                form.cleaned_data.get("subject"),
+                form.cleaned_data.get("message"),
+                form.cleaned_data["from_email"],
+            )
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html_form'] = render_to_string(template_name, context, request=request)
+    return JsonResponse(data)
+
+
+def contact(request):
+    if request.POST:
+        form = ContactUsForm(request.POST)
+    else:
+        form = ContactUsForm()
+    return contact_us(request, form, "blog/includes/contact_us_form.html")

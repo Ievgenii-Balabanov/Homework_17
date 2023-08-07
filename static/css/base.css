@@ -255,3 +255,11 @@ ol li {
     border: none;
     color: snow;
 }
+
+/*a.navbar-brand {*/
+/*    color: white;*/
+/*}*/
+
+.navbar-dark .navbar-brand {
+    color: #fff !important;
+}

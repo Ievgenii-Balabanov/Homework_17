@@ -25,3 +25,8 @@ def send_email(subject, message, from_email):
 @shared_task
 def send_email_to_admin(subject, message, from_email):
     send_mail(subject, message, settings.NOREPLY_EMAIL, [from_email])
+
+
+@shared_task
+def contact_email(subject, message, email):
+    send_mail(subject, message, settings.NOREPLY_EMAIL, email)
