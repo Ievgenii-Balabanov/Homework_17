@@ -10,12 +10,12 @@ $(function () {
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
-        $("#contact_us .modal-content").html("");
+        $("#modal-contact-us .modal-content").html("");
         console.log("First")
-        $("#contact_us").modal("show");
+        $("#modal-contact-us").modal("show");
       },
       success: function (data) {
-        $("#contact_us .modal-content").html(data.html_form);
+        $("#modal-contact-us .modal-content").html(data.html_form);
         console.log("Second")
       }
 
@@ -32,11 +32,11 @@ $(function () {
       dataType: 'json',
       success: function (data) {
         if (data.form_is_valid) {
-          $("#contact_us").modal("hide");
-          alert("Fuck you");
+          $("#modal-contact-us").modal("hide");
+          alert("Success! Your message has been sent successfully!");
         }
         else {
-          $("#contact_us .modal-content").html(data.html_form);
+          $("#modal-contact .modal-content").html(data.html_form);
         }
       }
     });
@@ -46,8 +46,8 @@ $(function () {
 
   /* Binding */
 
-  // Create book
+  // Contact Us
   $(".js-contact-us").click(loadForm);
-  $("#contact-us").on("submit", ".js-contact-us-form", emailForm);
+  $("#modal-contact-us").on("submit", ".js-contact-form", emailForm);
 
 });

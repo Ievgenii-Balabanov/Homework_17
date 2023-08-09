@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from .models import Comment, MyUser, UserPost
 
@@ -12,33 +13,23 @@ class RegisterForm(UserCreationForm):
         model = MyUser
         fields = ["username", "email", "password1", "password2"]
 
-#
-# class UpdateUserPostForm(forms.Form):
-#     title = forms.CharField(max_length=100)
-
 
 class UpdateUserPostForm(forms.ModelForm):
-    # body = forms.CharField(widget=forms.Textarea)
-
     class Meta:
         model = UserPost
-        # fields = ["title", "description"]
         fields = ["title", "content", "status"]
 
 
 class PostCreateForm(forms.ModelForm):
-    # body = forms.CharField(widget=forms.Textarea)
-
     class Meta:
         model = UserPost
-        # fields = ["title", "description"]
         fields = ["title", "content", "status"]
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['name', "body"]
+        fields = ["name", "body"]
 
 
 class ContactAdminForm(forms.Form):
@@ -49,21 +40,20 @@ class ContactAdminForm(forms.Form):
 
 class ContactUsForm(forms.Form):
     from_email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=35)
-    last_name = forms.CharField(max_length=40)
-    message = forms.Textarea()
+    subject = forms.CharField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
 
+    def clean_from_email(self):
+        data = self.cleaned_data["from_email"]
 
-class ContactUsForm(forms.ModelForm):
-    publication_date = forms.DateField(
-        required=False,
-        widget=forms.DateInput(attrs={"type": "date"}),
-    )
-    book_type = forms.ChoiceField(
-        required=False,
-        widget=forms.Select(attrs={'class': "custom-select"}),
-    )
-    #
-    # class Meta:
-    #     model = Book
-    #     fields = ('title', 'publication_date', 'author', 'price', 'pages', 'book_type', )
+        if data.strip().endswith("mail.ru"):
+            # raise ValidationError(_("We can't send email on mail.ru emails"))
+            raise ValidationError(_("Incorrect! Choose another domain name instead of 'mail.ru'"))
+        return data
+
+    def clean(self):
+        email = self.cleaned_data["from_email"]
+        subject = self.cleaned_data["subject"]
+
+        if email.endswith("gmail.com") and "spam" in subject.lower():
+            self.add_error(None, "Can't send spam emails")

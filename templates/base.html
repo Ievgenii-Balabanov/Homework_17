@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
+<title>{% block title %}Pizda{% endblock %}</title>
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -13,21 +12,6 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/navbars/">
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-
-
-
-{#  <title>{% block title %}Local Library{% endblock %}</title>#}
-{#  <meta charset="utf-8">#}
-{#  <meta name="viewport" content="width=device-width, initial-scale=1">#}
-{#  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"#}
-{#        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">#}
-{#  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
-{#  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"#}
-{#          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"#}
-{#          crossorigin="anonymous"></script>#}
-{#  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"#}
-{#          integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"#}
-{#          crossorigin="anonymous"></script>#}
 
     {% load static %}
 <link rel="stylesheet" href="{% static "css/base.css" %}">
@@ -42,88 +26,24 @@
         <a class="navbar-brand" href="{% url "blog:index" %}">Home</a>
 {#        <a class="navbar-brand" data-bs-toggle="modal" data-bs-target="#contact_us" data-bs-whatever="@getbootstrap" data-url="{% url "blog:contact_us" %}">Contact Us</a>#}
 
-        <button type="button" class="btn btn-primary js-contact-us" data-bs-toggle="modal" data-bs-target="#contact_us" data-bs-whatever="@getbootstrap" data-url="{% url "blog:contact_us" %}">Contact Us</button>
-        <div class="modal fade" id="contact-us" tabindex="-1" aria-labelledby="contact_us" aria-hidden="true">
+        <button type="button" class="btn btn-primary js-contact-us" data-bs-toggle="modal" data-bs-target="#modal-contact-us" data-bs-whatever="@getbootstrap" data-url="{% url "blog:contact" %}">Contact Us</button>
+        <div class="modal fade" id="modal-contact-us" tabindex="-1" aria-labelledby="contact_us" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
 
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="contact_us">Leave your contacts. We'll contact you as soon as possible.</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="input-group">
-                                <span class="input-group-text">First and last name</span>
-                                <input type="text" aria-label="First name" class="form-control" placeholder="John">
-                                <input type="text" aria-label="Last name" class="form-control" placeholder="Doe">
-                            </div>
-                            <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Your Email address</label>
-                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="test@noreply.com">
-                            </div>
-                            <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Message:</label>
-                                <textarea class="form-control" id="message-text" placeholder="Leave your message here..."></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Send message</button>
-                    </div>
                 </div>
             </div>
         </div>
 
-
-
-
-{#            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#              <div class="modal-dialog">#}
-{#                <div class="modal-content">#}
-{#                  <div class="modal-header">#}
-{#                    <h1 class="modal-title fs-5" id="exampleModalLabel">Leave your contacts. We'll contact you as soon as possible.</h1>#}
-{#                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
-{#                  </div>#}
-{#                  <div class="modal-body">#}
-{#                    <form>#}
-{#                        <div class="input-group">#}
-{#                            <span class="input-group-text">First and last name</span>#}
-{#                            <input type="text" aria-label="First name" class="form-control" placeholder="John">#}
-{#                            <input type="text" aria-label="Last name" class="form-control" placeholder="Doe">#}
-{#                        </div>#}
-{#                      <div class="mb-3">#}
-{#                          <label for="exampleFormControlInput1" class="form-label">Your Email address</label>#}
-{#                          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="test@noreply.com">#}
-{#                      </div>#}
-{#                      <div class="mb-3">#}
-{#                        <label for="message-text" class="col-form-label">Message:</label>#}
-{#                        <textarea class="form-control" id="message-text" placeholder="Leave your message here..."></textarea>#}
-{#                      </div>#}
-{#                    </form>#}
-{#                  </div>#}
-{#                  <div class="modal-footer">#}
-{#                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>#}
-{#                    <button type="button" class="btn btn-success">Send message</button>#}
-{#                  </div>#}
-{#                </div>#}
-{#              </div>#}
-{#            </div>#}
-
-
-
-
-{#      <a class="navbar-brand" href="{% url "blog:index" %}">Home</a>#}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExample01">
         <ul class="navbar-nav me-auto mb-2">
-{#          <li class="nav-item">#}
-{#            <a class="nav-link active" aria-current="page" href="#">Home</a>#}
-{#          </li>#}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link active" href="#">Link</a>
           </li>
@@ -146,38 +66,6 @@
     </div>
   </nav>
 
-
-
-{#        <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">#}
-{#            <nav class="navbar navbar-expand-lg bg-body-tertiary">#}
-{#                <div class="container-fluid">#}
-{#                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">#}
-{#                        <span class="navbar-toggler-icon"></span>#}
-{#                    </button>#}
-{#                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">#}
-{#                        <a class="navbar-brand" href="{% url "blog:index" %}">Home</a>#}
-{#                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">#}
-{#                            <li class="nav-item">#}
-{#                                {% if user.is_authenticated %}#}
-{#                                    <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>#}
-{#                                {% else %}#}
-{#                                    <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>#}
-{#                                    <li>#}
-{#                                    <a class="nav-link active" aria-current="page" href="{% url 'blog:register' %}">Register</a></li>#}
-{#                                {% endif %}#}
-{#                            </li>#}
-{#                            <li class="nav-item">#}
-{#                                <a class="nav-link" href="{% url "blog:contact_admin" %}">Contact to Admin</a>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                        <form class="d-flex" role="search">#}
-{#                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
-{#                            <button class="btn btn-outline-success" type="submit">Search</button>#}
-{#                        </form>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </nav>#}
-{#        </nav>#}
         <div class="container-fluid">
             {% if messages %}
                 <div class="row">
@@ -198,7 +86,6 @@
               {% block sidebar %}
                 <ul class="sidebar-nav">
                     <li><a href="{% url 'blog:all_user' %}">All Users</a></li>
-{#                    <li><a href="{% url 'blog:index' %}">Home</a></li>#}
                     <li><a href="{% url "blog:all_post" %}">All posts</a></li>
                     <li><a href="{% url 'blog:post_list' %}">User posts</a></li>
                     <li><a href="{% url 'blog:create_post' %}">Write a new Post</a></li>
@@ -210,26 +97,16 @@
                       {% if user.is_staff %}
                           <li>User Status: Staff</li>
                       {% endif %}
-        {#            <li><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>#}
                       <li><a href="{% url 'blog:public_profile' user.id %}">User profile</a></li>
-{#                      <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>#}
-{#                      <li><a href="{% url "blog:contact_admin" %}?next={{ request.path }}">Contact to Admin</a></li>#}
                   {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'blog:register' %}">Register</a></li>
                   {% endif %}
                 </ul>
 
-{#                  <ul class="sidebar-nav">#}
-{#                  <li>#}
-{#                      <a href="{% url "blog:contact_admin" %}?next={{ request.path }}">Contact to Admin</a>#}
-{#                  </li>#}
-{#                  </ul>#}
-
               {% endblock %}
             </div>
                 <div class="col-sm-10 ">
-{#                    <div>{% block br_cr %}<a href="{% url 'blog:index' %}">Home</a>{% endblock %}</div>#}
                     {% block content %}{% endblock %}
 
                     {% block pagination %}

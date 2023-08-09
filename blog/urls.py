@@ -16,9 +16,7 @@ urlpatterns = [
     path("post_list/<int:pk>/", views.UserPostDetailView.as_view(), name="post_detail"),
     path("post_list/<int:pk>/update/", views.UserPostUpdateView.as_view(), name="update_post"),
     path("post_list/", views.PostedPostByUserListView.as_view(), name="post_list"),
-    # path('post_list/<int:pk>/', views.post_detail, name='post_detail'),
-    path('add_comment/<int:pk>', views.add_comment, name='add_comment'),
+    path("add_comment/<int:pk>", views.add_comment, name="add_comment"),
     path("contact_admin/", views.contact_admin, name="contact_admin"),
-    path("contact_us/", views.contact_us, name="contact_us"),
-    # path("contact_us/", views.book_create, name="contact_us"),
+    path("contact/", views.contact, name="contact"),
 ]

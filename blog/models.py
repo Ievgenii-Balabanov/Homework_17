@@ -15,24 +15,21 @@ class MyUser(AbstractUser):
     image = models.ImageField()
 
 
-STATUS = (
-    (0, "Draft"),
-    (1, "Publish")
-)
+STATUS = ((0, "Draft"), (1, "Publish"))
 
 
 class UserPost(models.Model):
     title = models.CharField(max_length=200, unique=True)
     summary = models.CharField(max_length=100)
     image = models.ImageField(upload_to="media/images", blank=True, null=True)
-    author = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='blog_posts')
+    author = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="blog_posts")
     updated_on = models.DateTimeField(auto_now=True)
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
 
     class Meta:
-        ordering = ['-created_on']
+        ordering = ["-created_on"]
         permissions = (("can_update_post", "Can update some own posts"),)
 
     def __str__(self):
@@ -44,7 +41,6 @@ class UserPost(models.Model):
 
 
 class Comment(models.Model):
-    # author = models.OneToOneField(MyUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=70)
     body = models.CharField(max_length=250)
     created_on = models.DateTimeField(auto_now_add=True)
