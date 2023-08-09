@@ -1,18 +1,12 @@
-import uuid
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-# from django.contrib.auth import get_user_model
 from django.urls import reverse
-
-
-# User = get_user_model()
 
 
 class MyUser(AbstractUser):
     about = models.CharField(max_length=200)
-    image = models.ImageField()
+    image = models.ImageField(upload_to="images")
 
 
 STATUS = ((0, "Draft"), (1, "Publish"))

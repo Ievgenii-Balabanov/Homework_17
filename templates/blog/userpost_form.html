@@ -3,7 +3,6 @@
 {% block title %}Fuck{% endblock title %}
 </head>
 {% block content %}
-{% block title %}Fuck{% endblock title %}
     <form action="{% url "blog:create_post" %}" method="POST" enctype="multipart/form-data" class="form-group">
         {% csrf_token %}
         <table>
